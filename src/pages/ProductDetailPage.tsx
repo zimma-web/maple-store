@@ -56,7 +56,7 @@ const ProductDetailPage: React.FC = () => {
         <div className="md:w-1/2 flex flex-col justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white mb-4">{product.name}</h1>
-            <p className="text-gray-300 mb-4 font-semibold">Deskripsi Singkat Fitur / Apa yang Didapat:</p>
+            <p className="text-gray-300 mb-4 font-semibold">Features</p>
             <p className="text-gray-300 mb-4">{product.description}</p>
             <ul className="list-disc list-inside text-gray-300 mb-6">
               {product.features.map((feature, index) => (
