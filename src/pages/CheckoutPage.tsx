@@ -25,10 +25,30 @@ const CheckoutPage: React.FC = () => {
     agreeToTerms: false
   });
 
-  const cryptoPrices = getCryptoPrice(state.total);
+  // New state for promo code
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [discountApplied, setDiscountApplied] = useState(false);
+  const [promoError, setPromoError] = useState('');
+
+  const discountedTotal = discountApplied ? state.total - discount : state.total;
+  const cryptoPrices = getCryptoPrice(discountedTotal);
 
   const handleFormChange = (field: keyof CheckoutForm, value: string | boolean) => {
     setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Handle promo code apply
+  const handleApplyPromo = () => {
+    if (promoCode.trim().toUpperCase() === 'BIRTHDAY50') {
+      setDiscount(state.total * 0.5);
+      setDiscountApplied(true);
+      setPromoError('');
+    } else {
+      setDiscount(0);
+      setDiscountApplied(false);
+      setPromoError('Invalid promo code');
+    }
   };
 
   const isFormValid = () => {
@@ -152,7 +172,9 @@ const CheckoutPage: React.FC = () => {
               <div className="mt-6 pt-6 border-t border-gray-700">
                 <div className="flex justify-between items-center text-xl font-bold text-white">
                   <span>Total:</span>
-                  <span className="text-green-400">${state.total.toFixed(2)}</span>
+                  <span className="text-green-400">
+                    ${discountApplied ? (state.total - discount).toFixed(2) : state.total.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -205,6 +227,41 @@ const CheckoutPage: React.FC = () => {
                   required
                 />
                 <p className="text-xs text-gray-400 mt-1">License keys will be sent to this email</p>
+              </div>
+
+              {/* Promo Code Input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Promo Code
+                </label>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    className="flex-1 px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
+                    placeholder="Enter promo code"
+                    disabled={discountApplied}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyPromo}
+                    disabled={discountApplied}
+                    className={`px-4 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                      discountApplied
+                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                        : 'bg-green-600 hover:bg-green-700 text-white'
+                    }`}
+                  >
+                    Apply
+                  </button>
+                </div>
+                {promoError && <p className="text-red-500 text-sm mt-1">{promoError}</p>}
+                {discountApplied && (
+                  <p className="text-green-400 text-sm mt-1">
+                    Promo code applied! You saved ${discount.toFixed(2)}.
+                  </p>
+                )}
               </div>
 
               <div>
@@ -267,7 +324,7 @@ const CheckoutPage: React.FC = () => {
                       Get exclusive access to our Discord server, claim special roles based on your purchases, and connect with other users.
                     </p>
                     <a
-                      href="https://discord.gg/cryptostore"
+                      href="https://discord.gg/JFUuTsebyW"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors duration-300"
@@ -334,7 +391,9 @@ const CheckoutPage: React.FC = () => {
                 <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-300">Total Amount:</span>
-                    <span className="text-white font-bold">${state.total.toFixed(2)}</span>
+                    <span className="text-white font-bold">
+                      ${discountedTotal.toFixed(2)}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">Pay with {selectedCurrency.toUpperCase()}:</span>
