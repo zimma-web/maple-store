@@ -4,17 +4,17 @@ import { WalletAddress, PaymentRequest } from '../types';
 export const WALLET_ADDRESSES: WalletAddress[] = [
   {
     currency: 'ETH',
-    address: '0xd96940a1773e75ad6d554ac1b83bab0191bb3881',
+    address: '0x6C8873699222A024A8d2bBd9dCd951A53C8ca5d4',
     network: 'Ethereum'
   },
   {
     currency: 'USDT',
-    address: '0xd96940a1773e75ad6d554ac1b83bab0191bb3881',
+    address: '0x6C8873699222A024A8d2bBd9dCd951A53C8ca5d4',
     network: 'Ethereum (ERC-20)'
   },
   {
     currency: 'BNB',
-    address: '0xd96940a1773e75ad6d554ac1b83bab0191bb3881',
+    address: '0x6C8873699222A024A8d2bBd9dCd951A53C8ca5d4',
     network: 'BSC (BEP-20)'
   },
   {
